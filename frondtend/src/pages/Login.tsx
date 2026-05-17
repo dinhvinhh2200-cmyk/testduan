@@ -14,7 +14,7 @@ export default function Login() {
     try {
       console.log('Dữ liệu gửi đi:', data);
       // Gọi thử API lên Backend (tạm thời sẽ báo lỗi vì chưa có BE)
-      const response = await axiosClient.post('/auth/login', data);
+      const response = await axiosClient.post('auth/login', data);
       alert('Đăng nhập thành công!');
     } catch (error) {
       console.error('Lỗi kết nối Backend:', error);

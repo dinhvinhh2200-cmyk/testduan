@@ -1,0 +1,35 @@
+import {Request, Response} from 'express'
+import pool from '../config/database'
+import * as userModel from '../models/userModel'
+
+export const login = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {email, password} = req.body
+    
+    // 1 kiem tra email va password
+    if (!email || !password) {
+      res.status(400).json({success:false, message: 'vui long nhap day du email va password'})
+      return 
+    }
+
+    const user = await userModel.findUserByEmail(email)
+
+    if (!user) {
+      res.status(401).json({sucess:false, message:'Email nay ko ton tai tren he thong'})
+      return 
+    }
+
+    if (user.password !== password) {
+      res.status(401).json({sucess: false, message: 'Mat khau khong chinh xac'})
+      return
+    }
+
+    res.status(200).json({
+      sucess: true, 
+      message: 'dang nhap thanh cong'
+    })
+
+  }catch(error:any) {
+    res.status(500).json({success: false, message: 'Lỗi hệ thống!'})
+  }
+}
