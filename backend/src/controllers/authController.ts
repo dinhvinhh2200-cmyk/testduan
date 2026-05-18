@@ -15,18 +15,23 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const user = await userModel.findUserByEmail(email)
 
     if (!user) {
-      res.status(401).json({sucess:false, message:'Email nay ko ton tai tren he thong'})
+      res.status(401).json({success:false, message:'Email nay ko ton tai tren he thong'})
       return 
     }
 
     if (user.password !== password) {
-      res.status(401).json({sucess: false, message: 'Mat khau khong chinh xac'})
+      res.status(401).json({success: false, message: 'Mat khau khong chinh xac'})
       return
     }
 
     res.status(200).json({
-      sucess: true, 
-      message: 'dang nhap thanh cong'
+      success: true, 
+      message: 'dang nhap thanh cong',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      }
     })
 
   }catch(error:any) {
