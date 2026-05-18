@@ -7,19 +7,19 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE:test_db
+      MYSQL_DATABASE: test_db
     ports:
-      -"3306:3306"
+      - "3306:3306"
     volumes:
-      -mysql_data:var/lib/mysql
+      - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     build: ./backend
-    contarner_name: backend_container
+    container_name: backend_container
     restart: always
     ports:
-      -"5000:5000"
+      - "5000:5000"
     environment:
       - PORT=5000
       - DB_HOST=db
@@ -29,6 +29,7 @@ services:
       - DB_PORT=3306
     depends_on:
       - db
+
   frontend:
     build: ./frondtend
     container_name: frontend_container
@@ -37,5 +38,6 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+
 volumes:
   mysql_data:
