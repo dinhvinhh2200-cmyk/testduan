@@ -20,6 +20,11 @@ services:
     restart: always
     ports:
       - "5000:5000"
+    # BỔ SUNG VOLUMES CHO BACKEND:
+    volumes:
+      - ./backend:/app
+      - /app/node_modules # Giữ lại node_modules riêng của máy ảo không bị máy thật đè lên
+      - /app/dist
     environment:
       - PORT=5000
       - DB_HOST=db
@@ -36,6 +41,10 @@ services:
     restart: always
     ports:
       - "5173:5173"
+    # BỔ SUNG VOLUMES CHO FRONTEND:
+    volumes:
+      - ./frondtend:/app
+      - /app/node_modules # Giữ lại node_modules riêng của máy ảo
     depends_on:
       - backend
 
