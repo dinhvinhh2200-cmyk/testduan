@@ -56,13 +56,13 @@ export default function Login() {
 
         <div>
           <label>Password:</label>
-          <input 
-            type="password" 
+          <input
+            type="password"
             style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            {...register("password", { 
+            {...register("password", {
               required: 'Mật khẩu là bắt buộc',
               minLength: { value: 6, message: 'Mật khẩu phải từ 6 ký tự trở lên' }
-            })} 
+            })}
           />
         </div>
 
