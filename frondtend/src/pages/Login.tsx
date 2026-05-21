@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import axiosClient from "../api/axiosClient";
+import { authApi} from "../api/authApi";
 
 // Định nghĩa kiểu dữ liệu cho Form bằng TypeScript
 interface LoginFormInputs {
@@ -20,18 +20,16 @@ export default function Login() {
       console.log("Dữ liệu gửi đi:", data);
 
       // Gọi API lên Backend
-      const response = await axiosClient.post("/api/auth/login", data);
+      const res = await authApi.login(data)
 
-      // Sử dụng dữ liệu trả về từ Backend (thường nằm trong mục response.data)
-      const serverData = response.data;
-      console.log("Dữ liệu Backend trả về:", serverData);
+      
 
       // Bạn có thể lấy tên User mà Backend trả về để chào họ:
-      if (serverData.success) {
-        alert(`Đăng nhập thành công! Chào mừng ${serverData.user.name}`);
+      if (res.success) {
+        alert(`Đăng nhập thành công! Chào mừng ${res.user.name}`);
 
         // Sau này bạn có thể lưu token vào localStorage tại đây:
-        // localStorage.setItem('token', serverData.token);
+        // localStorage.setItem('token', res.token);
       }
     } catch (error) {
       console.error("Lỗi kết nối Backend:", error);
