@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { authApi} from "../api/authApi";
+import { authApi } from "../api/authApi";
 
 // Định nghĩa kiểu dữ liệu cho Form bằng TypeScript
 interface LoginFormInputs {
+  name: string;
   email: string;
-  idCard?: string; // Ví dụ thêm nếu cần
   password: string
 }
 
@@ -21,8 +21,6 @@ export default function Login() {
 
       // Gọi API lên Backend
       const res = await authApi.login(data)
-
-      
 
       // Bạn có thể lấy tên User mà Backend trả về để chào họ:
       if (res.success) {
@@ -41,6 +39,20 @@ export default function Login() {
     <div style={{ padding: "20px", maxWidth: "400px", margin: "0 auto" }}>
       <h2>Đăng Nhập Hệ Thống</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+
+         {/* validate cho trường name */}
+        <div>
+          <label>Name:</label>
+          <input
+            type="string"
+            {...register("name", { required: "Name là bắt buộc" })}
+          />
+          {errors.name && (
+            <p style={{ color: "red" }}>{errors.name.message}</p>
+          )}
+        </div>
+
+        {/* // validate cho trường email */}
         <div>
           <label>Email:</label>
           <input
@@ -52,6 +64,7 @@ export default function Login() {
           )}
         </div>
 
+        {/* // validate cho trường password */}
         <div>
           <label>Password:</label>
           <input
@@ -62,6 +75,9 @@ export default function Login() {
               minLength: { value: 6, message: 'Mật khẩu phải từ 6 ký tự trở lên' }
             })}
           />
+          {errors.password && (
+            <p style={{ color: "red" }}>{errors.password.message}</p>
+          )}
         </div>
 
         <button type="submit" style={{ marginTop: "10px" }}>
@@ -71,3 +87,5 @@ export default function Login() {
     </div>
   );
 }
+
+// bổ sung errors message lỗi cho password 

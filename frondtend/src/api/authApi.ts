@@ -2,6 +2,7 @@ import axiosClient from "./axiosClient";
 
 // 1 định nghĩa kiểu dữ liệu mà fe gửi đi cho be
 export interface loginPayLoad {
+  name: string;
   email: string;
   password: string;
 }

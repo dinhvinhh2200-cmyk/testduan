@@ -4,7 +4,7 @@ import * as userModel from "../models/userModel";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const {name, email, password } = req.body;
 
     // 1 kiem tra email va password
     if (!email || !password) {
@@ -16,6 +16,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const user = await userModel.findUserByEmail(email);
+
+    if (user?.name !== name) {
+      res.status(401).json({
+        success: false,
+        message: 'Name không tồn tại trên hệ thống'
+      })
+      return
+    }
 
     if (!user) {
       res.status(401).json({
