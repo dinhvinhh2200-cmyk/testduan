@@ -20,17 +20,15 @@ export default function Login() {
       console.log("Dữ liệu gửi đi:", data);
 
       // Gọi API lên Backend
-      const res = await authApi.login(data)
+      const res = await authApi.login(data);
 
-      // Bạn có thể lấy tên User mà Backend trả về để chào họ:
       if (res.success) {
         alert(`Đăng nhập thành công! Chào mừng ${res.user.name}`);
-
         // Sau này bạn có thể lưu token vào localStorage tại đây:
         // localStorage.setItem('token', res.token);
       }
     } catch (error) {
-      console.error("Lỗi kết nối Backend:", error);
+      console.error('loi tai khoan', error)
       alert("Sai tài khoản hoặc kết nối Backend thất bại!");
     }
   };
@@ -40,11 +38,11 @@ export default function Login() {
       <h2>Đăng Nhập Hệ Thống</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
 
-         {/* validate cho trường name */}
+        {/* validate cho trường name */}
         <div>
           <label>Name:</label>
           <input
-            type="string"
+            type="text"
             {...register("name", { required: "Name là bắt buộc" })}
           />
           {errors.name && (

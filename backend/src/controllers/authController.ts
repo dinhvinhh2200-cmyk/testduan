@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import pool from "../config/database";
 import * as userModel from "../models/userModel";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
-    const {name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     // 1 kiem tra email va password
-    if (!email || !password) {
+    if (!email || !password || !name) {
       res.status(400).json({
         success: false,
         message: "vui long nhap day du email va password",
@@ -17,18 +16,18 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     const user = await userModel.findUserByEmail(email);
 
-    if (user?.name !== name) {
-      res.status(401).json({
-        success: false,
-        message: 'Name không tồn tại trên hệ thống'
-      })
-      return
-    }
-
     if (!user) {
       res.status(401).json({
         success: false,
         message: "Email nay ko ton tai tren he thong",
+      });
+      return;
+    }
+
+    if (user.name !== name) {
+      res.status(401).json({
+        success: false,
+        message: "Name không tồn tại trên hệ thống",
       });
       return;
     }
