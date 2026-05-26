@@ -1,4 +1,4 @@
-import mysql  from 'mysql2';
+import mysql , { Pool }  from 'mysql2/promise';
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -11,5 +11,5 @@ const dbConfig = {
   port: Number(process.env.DB_PORT) || 3306
 }
 
-const pool = mysql.createPool(dbConfig)
-export default pool.promise()
+const pool: Pool = mysql.createPool(dbConfig)
+export default pool

@@ -8,9 +8,9 @@ export interface User {
   created_at?: string;
 }
 
-// model xu li tim kiem User bang email
+// model xu li tim kiem User bang email để đăng nhập
 export const findUserByEmail = async (email: string): Promise<User | null> => {
-  const [rows]: any = await pool.execute(
+  const [rows]: any = await (pool as any).execute(
     "SELECT * FROM users WHERE email = ?",
     [email],
   );
@@ -19,4 +19,15 @@ export const findUserByEmail = async (email: string): Promise<User | null> => {
     return rows[0] as User;
   }
   return null;
+};
+
+// model xử lí đăng kí để thêm user vào db
+export const createUser = async (user: User): Promise<number> => {
+  const [result]: any = await (pool as any).execute(
+    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+    [user.name, user.email, user.password],
+  );
+
+  const insertId = (result as any).insertId
+  return insertId
 };

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as userModel from "../models/userModel";
 
+// hàm xử lí login
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
@@ -52,3 +53,42 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ success: false, message: "Lỗi hệ thống!" });
   }
 };
+
+// hàm xử lí đăng kí 
+export const register = async (req: Request, res: Response): Promise<void> => {
+  try {
+
+    const {name, email, password} = req.body
+    if (!name || !email || !password) {
+      res.status(400).json({
+        success: false,
+        message: 'Vui lòng nhập đầy đủ thông tin'
+      })
+      return
+    }
+
+    const checkUser = await userModel.findUserByEmail(email)
+    if (checkUser) {
+      res.status(400).json({
+        success: false,
+        message: 'Email này đã tồn tại vui lòng nhập email khác'
+      })
+      return
+    }
+
+    // gọi models xử lí db
+    const newUserId = await userModel.createUser({name, email, password})
+    res.status(201).json({
+      success: true,
+      message: 'Đăng kí thành công',
+      newUserId: newUserId
+    })
+
+  } catch (error) {
+    console.log('Lỗi', error)
+    res.status(500).json({
+      success: false,
+      message: 'Đăng kí thất bại lỗi sever'
+    })
+  }
+}
